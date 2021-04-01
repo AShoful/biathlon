@@ -5,7 +5,7 @@ import db from "./db";
 function App() {
   const [search, setSearch] = useState("");
   const [table, setTable] = useState([]);
-  const [sort, setSort] = useState(true);
+  const [sort, setSort] = useState(1);
 
   useEffect(() => {
     if (Array.isArray(db)) {
@@ -20,11 +20,11 @@ function App() {
   );
 
   const sortTable = (field) => {
-    const check = sort ? 1 : -1;
+    // const check = sort ? 1 : -1;
     setTable((table) =>
-      table.sort((a, b) => (a[field] <= b[field] ? check : check * -1))
+      table.sort((a, b) => (a[field] <= b[field] ? sort : sort * -1))
     );
-    setSort(!sort);
+    setSort(sort * -1);
   };
 
   return (
