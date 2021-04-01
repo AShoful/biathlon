@@ -20,7 +20,6 @@ function App() {
   );
 
   const sortTable = (field) => {
-    // const check = sort ? 1 : -1;
     setTable((table) =>
       table.sort((a, b) => (a[field] <= b[field] ? sort : sort * -1))
     );
