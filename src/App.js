@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import "./App.css";
-import db from "./db";
 
 function App() {
   const [search, setSearch] = useState("");
@@ -8,16 +7,21 @@ function App() {
   const [sort, setSort] = useState(1);
 
   useEffect(() => {
-    if (Array.isArray(db)) {
-      setTable(db);
-    }
+    fetch("./db.json")
+      .then((res) => res.json())
+      .then((res) => {
+        if (Array.isArray(res)) {
+          setTable(res);
+        }
+      })
+      .catch((e) => console.log(e.message));
   }, []);
 
   const styles = (width) => ({ width: `${width}%`, textAlign: "center" });
 
-  const tableAfterSearch = table.filter((i) =>
-    i.name.toLowerCase().includes(search.toLowerCase())
-  );
+  const renderTable = search
+    ? table.filter((i) => i.name.toLowerCase().includes(search.toLowerCase()))
+    : table;
 
   const sortTable = (field) => {
     setTable((table) =>
@@ -61,7 +65,7 @@ function App() {
           </tr>
         </thead>
         <tbody>
-          {tableAfterSearch.map((item) => (
+          {renderTable.map((item) => (
             <tr key={item.id} className="tr">
               <td className="td">{item.id}</td>
               <td className="td">{item.name}</td>
